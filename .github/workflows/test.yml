@@ -1,0 +1,66 @@
+name: Test workflows
+
+on:
+  # This rule allows releases to be prepared from the Actions UI or Actions API
+  workflow_dispatch:
+    inputs:
+      'foo':
+        description: Sample input
+        default: 'bar'
+        required: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Makes current date available as `${{ steps.date-output.outputs.today }}`
+        id: date-output
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
+
+      - name: Show date output
+        id: date-output-show
+        run: echo "Got date ${{ steps.date-output.outputs.today }}"
+
+      - name: Makes current date available as `$today`
+        id: date-env
+        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Show date env
+        id: date-env-show
+        run: echo "Got date $today"
+
+      - name: Show input
+        id: input-show
+        run: echo "Got foo ${{ github.event.inputs.foo }}"
+
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
