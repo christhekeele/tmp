@@ -24,7 +24,7 @@ jobs:
         run: echo "Got input ${{ github.event.inputs.foo }}"
 
       - name: Open PR
-        uses: christhekeele/pull-request@output-pr-number
+        uses: repo-sync/pull-request@v2
         id: pr
         with:
           source_branch: pr_number
