@@ -4,9 +4,9 @@ on:
   # This rule allows releases to be prepared from the Actions UI or Actions API
   workflow_dispatch:
     inputs:
-      'foo':
-        description: Sample input
-        default: 'bar'
+      name:
+        description: PR Name
+        default: 'foobar'
         required: false
 
 jobs:
@@ -15,25 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Makes current date available as `${{ steps.date-output.outputs.today }}`
-        id: date-output
+      - name: Makes current date available as `${{ steps.date.outputs.today }}`
+        id: date
         run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
-
-      - name: Show date output
-        id: date-output-show
-        run: echo "Got date ${{ steps.date-output.outputs.today }}"
-
-      - name: Makes current date available as `$today`
-        id: date-env
-        run: echo "today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
-
-      - name: Show date env
-        id: date-env-show
-        run: echo "Got date $today"
 
       - name: Show input
         id: input-show
-        run: echo "Got foo ${{ github.event.inputs.foo }}"
+        run: echo "Got input ${{ github.event.inputs.foo }}"
 
       - name: Open PR
         uses: christhekeele/pull-request@output-pr-number
@@ -44,7 +32,6 @@ jobs:
           pr_title: "${{ github.event.inputs.name }} ${{ steps.date.outputs.today }}"
           pr_body: test
           pr_label: "release"
-          pr_draft: true
           pr_allow_empty: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
