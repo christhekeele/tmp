@@ -35,6 +35,19 @@ jobs:
         id: input-show
         run: echo "Got foo ${{ github.event.inputs.foo }}"
 
+      - name: Open PR
+        uses: christhekeele/pull-request@output-pr-number
+        id: pr
+        with:
+          source_branch: pr_number
+          destination_branch: main
+          pr_title: "${{ github.event.inputs.name }} ${{ steps.date.outputs.today }}"
+          pr_body: test
+          pr_label: "release"
+          pr_draft: true
+          pr_allow_empty: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
