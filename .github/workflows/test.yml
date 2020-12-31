@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Makes current date available as `${{ steps.date.outputs.today }}`
+      - name: Makes current date available as `steps.date.outputs.today`
         id: date
         run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
 
@@ -24,7 +24,7 @@ jobs:
         run: echo "Got input ${{ github.event.inputs.foo }}"
 
       - name: Open PR
-        uses: christhekeele/pull-request@output-pr-number
+        uses: repo-sync/pull-request@v2
         id: pr
         with:
           source_branch: pr_number
