@@ -35,14 +35,20 @@ jobs:
       - name: Parse input
         id: parse-input
         run: |
-          echo "::set-output name=jira::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $1}')"
-          echo "::set-output name=desc::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $2}' | tr '\-\_\/' ' ')"
+          branch=${{ github.event.inputs.branch }}
+          jira=$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $1}')
+          desc=$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $2}' | tr '\-\_\/' ' ')
+          echo "::set-output name=branch::$branch"
+          echo "::set-output name=jira::$jira"
+          echo "::set-output name=desc::$desc"
+          echo "::set-output name=title::$(echo '[$jira] $desc')"
 
       - name: Show input
         id: input-show
         run: |
           echo "Got JIRA: ${{ steps.parse-input.outputs.jira }}"
           echo "Got desc: ${{ steps.parse-input.outputs.desc }}"
+          echo "Got title: ${{ steps.parse-input.outputs.title }}"
 
       - name: Dump GitHub context
         env:
