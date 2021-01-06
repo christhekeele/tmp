@@ -10,7 +10,8 @@ on:
         required: false
 
 jobs:
-  prepare:
+  test:
+    environment: "Test Environment"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
