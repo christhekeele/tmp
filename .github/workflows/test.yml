@@ -35,8 +35,8 @@ jobs:
       - name: Parse input
         id: parse-input
         run: |
-          echo "::set-output name=jira::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $1})"
-          echo "::set-output name=desc::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $2} | tr '\-\_\/' ' ')"
+          echo "::set-output name=jira::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $1}')"
+          echo "::set-output name=desc::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $2}' | tr '\-\_\/' ' ')"
 
       - name: Show input
         id: input-show
