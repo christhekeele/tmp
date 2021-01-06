@@ -41,7 +41,7 @@ jobs:
           echo "::set-output name=branch::$branch"
           echo "::set-output name=jira::$jira"
           echo "::set-output name=desc::$desc"
-          echo "::set-output name=title::$(echo '\[$jira\] $desc')"
+          echo "::set-output name=title::\[$jira\] $desc)"
 
       - name: Show input
         id: input-show
