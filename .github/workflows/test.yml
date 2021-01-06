@@ -4,9 +4,9 @@ on:
   # This rule allows releases to be prepared from the Actions UI or Actions API
   workflow_dispatch:
     inputs:
-      'foo':
-        description: Sample input
-        default: 'bar'
+      branch:
+        description: Sample branch name
+        default: 'JIRA-123/foo-bar-baz'
         required: false
 
 jobs:
@@ -31,10 +31,18 @@ jobs:
       - name: Show date env
         id: date-env-show
         run: echo "Got date $today"
+        
+      - name: Parse input
+        id: parse-input
+        run: |
+          echo "::set-output name=jira::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $1})"
+          echo "::set-output name=desc::$(echo ${{ github.event.inputs.branch }} | awk -F '/' '{print $2} | tr '\-\_\/' ' ')"
 
       - name: Show input
         id: input-show
-        run: echo "Got foo ${{ github.event.inputs.foo }}"
+        run: |
+          echo "Got JIRA: ${{ steps.parse-input.outputs.jira }}"
+          echo "Got desc: ${{ steps.parse-input.outputs.desc }}"
 
       - name: Dump GitHub context
         env:
